@@ -3,7 +3,7 @@ name: deploy ProductServlet to remote WildFly application server
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   build:
