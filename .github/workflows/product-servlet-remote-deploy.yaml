@@ -20,7 +20,7 @@ jobs:
       - name: Build with Maven
         id: mvn_build
         run: |
-          cd first-sevlet-app
+          cd first-servlet-app
           mvn --batch-mode clean install wildfly:undeploy wildfly:deploy \
                         -Dwildfly.hostname=${{ secrets.WILDFLY_REMOTE_HOST }} \
                         -Dwildfly.username=${{ secrets.WILDFLY_ADMIN_LOGIN }} \
