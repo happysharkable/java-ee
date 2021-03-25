@@ -1,7 +1,6 @@
 package ru.happyshark.java.ee.products.listeners;
 
-import ru.happyshark.java.ee.products.persist.Product;
-import ru.happyshark.java.ee.products.persist.ProductRepository;
+import ru.happyshark.java.ee.products.persist.*;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -12,6 +11,12 @@ import java.math.BigDecimal;
 public class StartupListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
+        initProductRepository(sce);
+        initCategoryRepository(sce);
+        initCustomerRepository(sce);
+    }
+
+    private void initProductRepository(ServletContextEvent sce) {
         ProductRepository productRepository = new ProductRepository();
 
         productRepository.save(new Product(null, "Bread", "Fresh garlic bread", new BigDecimal(100)));
@@ -21,4 +26,27 @@ public class StartupListener implements ServletContextListener {
 
         sce.getServletContext().setAttribute("productRepository", productRepository);
     }
+
+    private void initCategoryRepository(ServletContextEvent sce) {
+        CategoryRepository categoryRepository = new CategoryRepository();
+
+        categoryRepository.save(new Category(null, "Groceries"));
+        categoryRepository.save(new Category(null, "Dairy products"));
+        categoryRepository.save(new Category(null, "Meat"));
+        categoryRepository.save(new Category(null, "House stuff"));
+
+        sce.getServletContext().setAttribute("categoryRepository", categoryRepository);
+    }
+
+    private void initCustomerRepository(ServletContextEvent sce) {
+        CustomerRepository customerRepository = new CustomerRepository();
+
+        customerRepository.save(new Customer(null, "Bob Johnson"));
+        customerRepository.save(new Customer(null, "Alice Cooper"));
+        customerRepository.save(new Customer(null, "Jack White"));
+        customerRepository.save(new Customer(null, "Jimmy Hendrix"));
+
+        sce.getServletContext().setAttribute("customerRepository", customerRepository);
+    }
+
 }
