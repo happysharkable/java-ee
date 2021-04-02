@@ -1,6 +1,5 @@
 package ru.happyshark.java.ee.products;
 
-import org.apache.log4j.Logger;
 import ru.happyshark.java.ee.products.persist.Customer;
 import ru.happyshark.java.ee.products.persist.CustomerRepository;
 
@@ -15,7 +14,6 @@ import java.util.regex.Pattern;
 
 @WebServlet(urlPatterns = {"/customer/*"})
 public class CustomerServlet extends HttpServlet {
-    private static final Logger logger = Logger.getLogger(CustomerServlet.class);
 
     private static final Pattern pathParam = Pattern.compile("\\/?(delete)?\\/(\\d*)$");
 
@@ -29,13 +27,11 @@ public class CustomerServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (req.getPathInfo() == null || req.getPathInfo().equals("") || req.getPathInfo().equals("/")) {
-            logger.info("Show all " + req.getPathInfo());
             req.setAttribute("customers", customerRepository.findAll());
             getServletContext().getRequestDispatcher("/WEB-INF/views/customer.jsp").forward(req, resp);
         } else if (req.getPathInfo().equals("/new")) {
             getServletContext().getRequestDispatcher("/WEB-INF/views/customer_form.jsp").forward(req, resp);
         } else if (req.getPathInfo().startsWith("/delete/")) {
-            logger.info("Delete " + req.getPathInfo());
             Matcher matcher = pathParam.matcher(req.getPathInfo());
             if (matcher.matches()) {
                 long id;
@@ -50,7 +46,6 @@ public class CustomerServlet extends HttpServlet {
             }
             resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
         } else {
-            logger.info("Show one " + req.getPathInfo());
             Matcher matcher = pathParam.matcher(req.getPathInfo());
             if (matcher.matches()) {
                 long id;

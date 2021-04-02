@@ -1,6 +1,5 @@
 package ru.happyshark.java.ee.products;
 
-import org.apache.log4j.Logger;
 import ru.happyshark.java.ee.products.persist.Product;
 import ru.happyshark.java.ee.products.persist.ProductRepository;
 
@@ -16,8 +15,6 @@ import java.util.regex.Pattern;
 
 @WebServlet(urlPatterns = {"/product/*"})
 public class ProductServlet extends HttpServlet {
-    private static final Logger logger = Logger.getLogger(ProductServlet.class);
-
     private static final Pattern pathParam = Pattern.compile("\\/?(delete)?\\/(\\d*)$");
 
     private ProductRepository productRepository;
@@ -30,13 +27,11 @@ public class ProductServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (req.getPathInfo() == null || req.getPathInfo().equals("") || req.getPathInfo().equals("/")) {
-            logger.info("Show all " + req.getPathInfo());
             req.setAttribute("products", productRepository.findAll());
             getServletContext().getRequestDispatcher("/WEB-INF/views/product.jsp").forward(req, resp);
         } else if (req.getPathInfo().equals("/new")) {
             getServletContext().getRequestDispatcher("/WEB-INF/views/product_form.jsp").forward(req, resp);
         } else if (req.getPathInfo().startsWith("/delete/")) {
-            logger.info("Delete " + req.getPathInfo());
             Matcher matcher = pathParam.matcher(req.getPathInfo());
             if (matcher.matches()) {
                 long id;
@@ -51,7 +46,6 @@ public class ProductServlet extends HttpServlet {
             }
             resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
         } else {
-            logger.info("Show one " + req.getPathInfo());
             Matcher matcher = pathParam.matcher(req.getPathInfo());
             if (matcher.matches()) {
                 long id;
