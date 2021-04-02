@@ -1,7 +1,7 @@
 <html lang="en"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:pp="http://primefaces.org/ui">
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+>
 
 <h:head>
     <!-- Required meta tags -->
@@ -13,9 +13,6 @@
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"/>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"/>
     <title>EShop application</title>
-    <style type="text/css">
-        button.ui-button { margin: 3px }
-    </style>
 </h:head>
 
 <h:body>
@@ -30,10 +27,10 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
+                <li class="nav-item">
                     <h:link styleClass="nav-link" value="Product" outcome="/product"/>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item active">
                     <h:link styleClass="nav-link" value="Category" outcome="/category"/>
                 </li>
                 <li class="nav-item">
@@ -44,43 +41,20 @@
     </nav>
 
     <div class="container">
-            <h:form>
-                <div class="col-12">
-                    <pp:commandButton value="Add Product" styleClass="ui-button ui-button-success"
-                                      action="#{productController.addProduct()}"/>
-                </div>
-
-                <div class="col-12">
-                    <pp:dataTable value="#{productController.findAll()}" var="product">
-                        <pp:column>
-                            <f:facet name="header">Id</f:facet>
-                            #{product.id}
-                        </pp:column>
-                        <pp:column>
-                            <f:facet name="header">Name</f:facet>
-                            #{product.name}
-                        </pp:column>
-                        <pp:column>
-                            <f:facet name="header">Description</f:facet>
-                            #{product.description}
-                        </pp:column>
-                        <pp:column>
-                            <f:facet name="header">Price</f:facet>
-                            #{product.price}
-                        </pp:column>
-                        <pp:column>
-                            <f:facet name="header">Actions</f:facet>
-
-                            <pp:commandButton icon="pi pi-pencil" styleClass="ui-button"
-                                              action="#{productController.editProduct(product)}"/>
-                            <pp:commandButton icon="pi pi-times" styleClass="ui-button ui-button-danger"
-                                              action="#{productController.deleteProduct(product)}"/>
-                        </pp:column>
-                    </pp:dataTable>
-
-                </div>
-            </h:form>
-
+        <div class="row py-2">
+            <div class="col-12">
+                <h:form>
+                    <div class="form-group">
+                        <h:outputLabel value="Name"/>
+                        <h:inputText styleClass="form-control" id="name"
+                                     value="#{categoryController.category.name}"
+                                     placeholder="Enter name"/>
+                    </div>
+                    <h:commandButton value="Submit" styleClass="btn btn-primary"
+                                     action="#{categoryController.saveCategory()}"/>
+                </h:form>
+            </div>
+        </div>
     </div>
 
     <!-- Optional JavaScript -->
@@ -94,5 +68,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
             crossorigin="anonymous"></script>
+
 </h:body>
+
 </html>

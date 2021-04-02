@@ -30,10 +30,10 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
+                <li class="nav-item">
                     <h:link styleClass="nav-link" value="Product" outcome="/product"/>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item active">
                     <h:link styleClass="nav-link" value="Category" outcome="/category"/>
                 </li>
                 <li class="nav-item">
@@ -44,37 +44,29 @@
     </nav>
 
     <div class="container">
-            <h:form>
+            <h:form id="categoryTableForm">
                 <div class="col-12">
-                    <pp:commandButton value="Add Product" styleClass="ui-button ui-button-success"
-                                      action="#{productController.addProduct()}"/>
+                    <pp:commandButton value="Add Category" styleClass="ui-button ui-button-success"
+                                     action="#{categoryController.addCategory()}"/>
                 </div>
-
                 <div class="col-12">
-                    <pp:dataTable value="#{productController.findAll()}" var="product">
+                    <pp:dataTable value="#{categoryController.findAll()}" var="category"
+                                 styleClass="table table-bordered my-2">
                         <pp:column>
                             <f:facet name="header">Id</f:facet>
-                            #{product.id}
+                            #{category.id}
                         </pp:column>
                         <pp:column>
                             <f:facet name="header">Name</f:facet>
-                            #{product.name}
-                        </pp:column>
-                        <pp:column>
-                            <f:facet name="header">Description</f:facet>
-                            #{product.description}
-                        </pp:column>
-                        <pp:column>
-                            <f:facet name="header">Price</f:facet>
-                            #{product.price}
+                            #{category.name}
                         </pp:column>
                         <pp:column>
                             <f:facet name="header">Actions</f:facet>
 
                             <pp:commandButton icon="pi pi-pencil" styleClass="ui-button"
-                                              action="#{productController.editProduct(product)}"/>
+                                              action="#{categoryController.editCategory(category)}"/>
                             <pp:commandButton icon="pi pi-times" styleClass="ui-button ui-button-danger"
-                                              action="#{productController.deleteProduct(product)}"/>
+                                              action="#{categoryController.deleteCategory(category)}"/>
                         </pp:column>
                     </pp:dataTable>
 
