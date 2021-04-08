@@ -1,9 +1,11 @@
 package ru.happyshark.java.ee.controller;
 
 import ru.happyshark.java.ee.persist.Customer;
+import ru.happyshark.java.ee.persist.Product;
 import ru.happyshark.java.ee.repository.CustomerRepository;
 
 import javax.enterprise.context.SessionScoped;
+import javax.faces.event.ComponentSystemEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -17,6 +19,12 @@ public class CustomerController implements Serializable {
     private CustomerRepository customerRepository;
 
     private Customer customer;
+
+    private List<Customer> customerList;
+
+    public void preloadData(ComponentSystemEvent componentSystemEvent) {
+        this.customerList = customerRepository.findAll();
+    }
 
     public Customer getCustomer() {
         return customer;

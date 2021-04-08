@@ -13,12 +13,11 @@
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"/>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"/>
     <title>EShop application</title>
-    <style type="text/css">
-        button.ui-button { margin: 3px }
-    </style>
 </h:head>
 
 <h:body>
+
+    <f:event listener="#{categoryController.preloadData}" type="preRenderView"/>
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="#">EShop</a>
@@ -44,34 +43,39 @@
     </nav>
 
     <div class="container">
+        <div class="row py-2">
             <h:form id="categoryTableForm">
                 <div class="col-12">
-                    <pp:commandButton value="Add Category" styleClass="ui-button ui-button-success"
+                    <h:commandButton value="Add Category" styleClass="btn btn-success"
                                      action="#{categoryController.addCategory()}"/>
                 </div>
+
                 <div class="col-12">
-                    <pp:dataTable value="#{categoryController.findAll()}" var="category"
+                    <h:dataTable value="#{categoryController.findAll()}" var="category"
                                  styleClass="table table-bordered my-2">
-                        <pp:column>
+                        <h:column>
                             <f:facet name="header">Id</f:facet>
                             #{category.id}
-                        </pp:column>
-                        <pp:column>
+                        </h:column>
+                        <h:column>
                             <f:facet name="header">Name</f:facet>
                             #{category.name}
-                        </pp:column>
-                        <pp:column>
+                        </h:column>
+                        <h:column>
                             <f:facet name="header">Actions</f:facet>
 
-                            <pp:commandButton icon="pi pi-pencil" styleClass="ui-button"
-                                              action="#{categoryController.editCategory(category)}"/>
-                            <pp:commandButton icon="pi pi-times" styleClass="ui-button ui-button-danger"
-                                              action="#{categoryController.deleteCategory(category)}"/>
-                        </pp:column>
-                    </pp:dataTable>
+                            <h:commandButton value="Edit" styleClass="btn btn-success"
+                                             action="#{categoryController.editCategory(category)}"/>
+                            <h:commandButton value="Delete" styleClass="btn btn-danger"
+                                             action="#{categoryController.deleteCategory(category)}">
+                                <f:ajax event="click" render="categoryTableForm"/>
+                            </h:commandButton>
+                        </h:column>
+                    </h:dataTable>
 
                 </div>
             </h:form>
+        </div>
 
     </div>
 

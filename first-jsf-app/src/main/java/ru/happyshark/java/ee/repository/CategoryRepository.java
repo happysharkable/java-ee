@@ -3,45 +3,71 @@ package ru.happyshark.java.ee.repository;
 import ru.happyshark.java.ee.persist.Category;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
-import java.util.ArrayList;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.transaction.SystemException;
+import javax.transaction.Transactional;
+import javax.transaction.UserTransaction;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicLong;
 
 @ApplicationScoped
 @Named
 public class CategoryRepository {
-    private final Map<Long, Category> categoriesMap = new ConcurrentHashMap<>();
+    @PersistenceContext(unitName = "ds")
+    private EntityManager em;
 
-    private final AtomicLong identity = new AtomicLong(0);
+    @Resource
+    private UserTransaction ut;
 
     @PostConstruct
     public void init() {
-        save(new Category(null, "Game console"));
-        save(new Category(null, "Game cartridge"));
-        save(new Category(null, "Game CD"));
-        save(new Category(null, "Other"));
+        if (count() == 0) {
+            try {
+                ut.begin();
+                save(new Category(null, "Game cartrigde"));
+                save(new Category(null, "Game console"));
+                save(new Category(null, "Accessories"));
+                save(new Category(null, "Merch"));
+                ut.commit();
+            } catch (Exception ex) {
+                try {
+                    ut.rollback();
+                } catch (SystemException exx) {
+                    throw new RuntimeException(exx);
+                }
+                throw new RuntimeException(ex);
+            }
+        }
     }
 
+    @Transactional
     public void save(Category category) {
         if (category.getId() == null) {
-            category.setId(identity.incrementAndGet());
+            em.persist(category);
         }
-        categoriesMap.put(category.getId(), category);
+        em.merge(category);
     }
 
+    @Transactional
     public void delete(Long id) {
-        categoriesMap.remove(id);
+        em.createNamedQuery("deleteCategoryById")
+                .setParameter("id", id)
+                .executeUpdate();
     }
 
     public Category findById(Long id) {
-        return categoriesMap.get(id);
+        return em.find(Category.class, id);
     }
 
     public List<Category> findAll() {
-        return new ArrayList<>(categoriesMap.values());
+        return em.createNamedQuery("findAllCategory", Category.class)
+                .getResultList();
+    }
+
+    public long count() {
+        return em.createNamedQuery("countCategories", Long.class).getSingleResult();
     }
 }

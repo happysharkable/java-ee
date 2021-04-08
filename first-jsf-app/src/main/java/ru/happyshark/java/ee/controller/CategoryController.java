@@ -1,9 +1,11 @@
 package ru.happyshark.java.ee.controller;
 
 import ru.happyshark.java.ee.persist.Category;
+import ru.happyshark.java.ee.persist.Customer;
 import ru.happyshark.java.ee.repository.CategoryRepository;
 
 import javax.enterprise.context.SessionScoped;
+import javax.faces.event.ComponentSystemEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -17,6 +19,12 @@ public class CategoryController implements Serializable {
     private CategoryRepository categoryRepository;
 
     private Category category;
+
+    private List<Category> categoryList;
+
+    public void preloadData(ComponentSystemEvent componentSystemEvent) {
+        this.categoryList = categoryRepository.findAll();
+    }
 
     public Category getCategory() {
         return category;
