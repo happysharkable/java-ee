@@ -13,12 +13,11 @@
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"/>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"/>
     <title>EShop application</title>
-    <style type="text/css">
-        button.ui-button { margin: 3px }
-    </style>
 </h:head>
 
 <h:body>
+
+    <f:event listener="#{productController.preloadData}" type="preRenderView"/>
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="#">EShop</a>
@@ -44,42 +43,47 @@
     </nav>
 
     <div class="container">
-            <h:form>
+        <div class="row py-2">
+            <h:form id="productTableForm">
                 <div class="col-12">
-                    <pp:commandButton value="Add Product" styleClass="ui-button ui-button-success"
-                                      action="#{productController.addProduct()}"/>
+                    <h:commandButton value="Add Product" styleClass="btn btn-success"
+                                     action="#{productController.addProduct()}"/>
                 </div>
 
                 <div class="col-12">
-                    <pp:dataTable value="#{productController.findAll()}" var="product">
-                        <pp:column>
+                    <h:dataTable value="#{productController.findAll()}" var="product"
+                                 styleClass="table table-bordered my-2">
+                        <h:column>
                             <f:facet name="header">Id</f:facet>
                             #{product.id}
-                        </pp:column>
-                        <pp:column>
+                        </h:column>
+                        <h:column>
                             <f:facet name="header">Name</f:facet>
                             #{product.name}
-                        </pp:column>
-                        <pp:column>
+                        </h:column>
+                        <h:column>
                             <f:facet name="header">Description</f:facet>
                             #{product.description}
-                        </pp:column>
-                        <pp:column>
+                        </h:column>
+                        <h:column>
                             <f:facet name="header">Price</f:facet>
                             #{product.price}
-                        </pp:column>
-                        <pp:column>
+                        </h:column>
+                        <h:column>
                             <f:facet name="header">Actions</f:facet>
 
-                            <pp:commandButton icon="pi pi-pencil" styleClass="ui-button"
-                                              action="#{productController.editProduct(product)}"/>
-                            <pp:commandButton icon="pi pi-times" styleClass="ui-button ui-button-danger"
-                                              action="#{productController.deleteProduct(product)}"/>
-                        </pp:column>
-                    </pp:dataTable>
+                            <h:commandButton value="Edit" styleClass="btn btn-success"
+                                             action="#{productController.editProduct(product)}"/>
+                            <h:commandButton value="Delete" styleClass="btn btn-danger"
+                                             action="#{productController.deleteProduct(product)}">
+                                <f:ajax event="click" render="productTableForm"/>
+                            </h:commandButton>
+                        </h:column>
+                    </h:dataTable>
 
                 </div>
             </h:form>
+        </div>
 
     </div>
 
