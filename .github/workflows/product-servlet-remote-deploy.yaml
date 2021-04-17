@@ -23,7 +23,7 @@ jobs:
           mvn --batch-mode clean install
 
       - name: Build JSF with Maven
-        id: mvn_build
+        id: mvn_build_jsf
         run: |
           cd first-jsf-app
           mvn --batch-mode clean install wildfly:undeploy wildfly:deploy \
