@@ -1,7 +1,8 @@
 <html lang="en"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:pp="http://primefaces.org/ui">
+      xmlns:pp="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
 
 <h:head>
     <!-- Required meta tags -->
@@ -17,41 +18,22 @@
 
 <h:body>
 
-    <f:event listener="#{categoryController.preloadData}" type="preRenderView"/>
+    <f:event listener="#{productController.preloadData}" type="preRenderView"/>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">EShop</a>
-
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <h:link styleClass="nav-link" value="Product" outcome="/product"/>
-                </li>
-                <li class="nav-item active">
-                    <h:link styleClass="nav-link" value="Category" outcome="/category"/>
-                </li>
-                <li class="nav-item">
-                    <h:link styleClass="nav-link" value="Customer" outcome="/customer"/>
-                </li>
-            </ul>
-        </div>
-    </nav>
+    <ui:include src="WEB-INF/fragments/header.xhtml">
+        <ui:param name="pageName" value="Category"/>
+    </ui:include>
 
     <div class="container">
         <div class="row py-2">
             <h:form id="categoryTableForm">
                 <div class="col-12">
                     <h:commandButton value="Add Category" styleClass="btn btn-success"
-                                     action="#{categoryController.addCategory()}"/>
+                                     action="#{productController.addCategory()}"/>
                 </div>
 
                 <div class="col-12">
-                    <h:dataTable value="#{categoryController.findAll()}" var="category"
+                    <h:dataTable value="#{productController.findAllCategories()}" var="category"
                                  styleClass="table table-bordered my-2">
                         <h:column>
                             <f:facet name="header">Id</f:facet>
@@ -65,9 +47,9 @@
                             <f:facet name="header">Actions</f:facet>
 
                             <h:commandButton value="Edit" styleClass="btn btn-success"
-                                             action="#{categoryController.editCategory(category)}"/>
+                                             action="#{productController.editCategory(category)}"/>
                             <h:commandButton value="Delete" styleClass="btn btn-danger"
-                                             action="#{categoryController.deleteCategory(category)}">
+                                             action="#{productController.deleteCategory(category)}">
                                 <f:ajax event="click" render="categoryTableForm"/>
                             </h:commandButton>
                         </h:column>

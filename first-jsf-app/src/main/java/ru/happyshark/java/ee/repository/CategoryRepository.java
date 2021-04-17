@@ -1,73 +1,53 @@
 package ru.happyshark.java.ee.repository;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.happyshark.java.ee.persist.Category;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Named;
+import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.transaction.SystemException;
-import javax.transaction.Transactional;
-import javax.transaction.UserTransaction;
 import java.util.List;
 
-@ApplicationScoped
-@Named
+@Stateless
 public class CategoryRepository {
+
+    private static final Logger logger = LoggerFactory.getLogger(CategoryRepository.class);
+
     @PersistenceContext(unitName = "ds")
     private EntityManager em;
 
-    @Resource
-    private UserTransaction ut;
-
-    @PostConstruct
-    public void init() {
-        if (count() == 0) {
-            try {
-                ut.begin();
-                save(new Category(null, "Game cartrigde"));
-                save(new Category(null, "Game console"));
-                save(new Category(null, "Accessories"));
-                save(new Category(null, "Merch"));
-                ut.commit();
-            } catch (Exception ex) {
-                try {
-                    ut.rollback();
-                } catch (SystemException exx) {
-                    throw new RuntimeException(exx);
-                }
-                throw new RuntimeException(ex);
-            }
-        }
-    }
-
-    @Transactional
-    public void save(Category category) {
-        if (category.getId() == null) {
-            em.persist(category);
-        }
-        em.merge(category);
-    }
-
-    @Transactional
-    public void delete(Long id) {
-        em.createNamedQuery("deleteCategoryById")
-                .setParameter("id", id)
-                .executeUpdate();
+    public List<Category> findAll() {
+        return em.createNamedQuery("findAllCategories", Category.class)
+                .getResultList();
     }
 
     public Category findById(Long id) {
         return em.find(Category.class, id);
     }
 
-    public List<Category> findAll() {
-        return em.createNamedQuery("findAllCategory", Category.class)
-                .getResultList();
+    public Category getReference(Long id) {
+        return em.getReference(Category.class, id);
     }
 
-    public long count() {
-        return em.createNamedQuery("countCategories", Long.class).getSingleResult();
+    public Long countAll() {
+        return em.createNamedQuery("countAllCategories", Long.class)
+                .getSingleResult();
+    }
+
+    @TransactionAttribute
+    public void saveOrUpdate(Category category) {
+        if (category.getId() == null) {
+            em.persist(category);
+        }
+        em.merge(category);
+    }
+
+    @TransactionAttribute
+    public void deleteById(Long id) {
+        em.createNamedQuery("deleteCategoryById")
+                .setParameter("id", id)
+                .executeUpdate();
     }
 }

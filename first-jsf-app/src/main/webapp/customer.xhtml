@@ -1,7 +1,8 @@
 <html lang="en"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:pp="http://primefaces.org/ui">
+      xmlns:pp="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
 
 <h:head>
     <!-- Required meta tags -->
@@ -19,28 +20,9 @@
 
     <f:event listener="#{customerController.preloadData}" type="preRenderView"/>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">EShop</a>
-
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <h:link styleClass="nav-link" value="Product" outcome="/product"/>
-                </li>
-                <li class="nav-item">
-                    <h:link styleClass="nav-link" value="Category" outcome="/category"/>
-                </li>
-                <li class="nav-item active">
-                    <h:link styleClass="nav-link" value="Customer" outcome="/customer"/>
-                </li>
-            </ul>
-        </div>
-    </nav>
+    <ui:include src="WEB-INF/fragments/header.xhtml">
+        <ui:param name="pageName" value="Customer"/>
+    </ui:include>
 
     <div class="container">
         <div class="row py-2">
