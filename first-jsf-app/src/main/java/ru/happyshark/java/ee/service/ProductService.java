@@ -19,4 +19,6 @@ public interface ProductService {
     List<ProductRepr> findAllWithCategoryFetch();
 
     long count();
+
+    void setCategoryToNullForProductsWithCategoryId(Long categoryId);
 }

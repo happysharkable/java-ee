@@ -82,6 +82,11 @@ public class ProductServiceImpl implements ProductService, ProductServiceRemote 
     }
 
     @Override
+    public void setCategoryToNullForProductsWithCategoryId(Long categoryId) {
+        productRepository.setCategoryToNullForProductsWithCategoryId(categoryId);
+    }
+
+    @Override
     public List<ProductRepr> findAllRemote() {
         return findAllWithCategoryFetch();
     }

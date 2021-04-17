@@ -17,6 +17,11 @@ jobs:
         with:
           java-version: 11
 
+      - name: Build with Maven
+          id: mvn_build
+          run: |
+            mvn --batch-mode clean install
+
       - name: Build JSF with Maven
         id: mvn_build
         run: |

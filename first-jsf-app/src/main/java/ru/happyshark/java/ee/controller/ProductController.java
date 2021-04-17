@@ -3,14 +3,12 @@ package ru.happyshark.java.ee.controller;
 import ru.happyshark.java.ee.persist.Category;
 import ru.happyshark.java.ee.persist.Product;
 import ru.happyshark.java.ee.repository.CategoryRepository;
-import ru.happyshark.java.ee.repository.ProductRepository;
 import ru.happyshark.java.ee.service.ProductService;
 import ru.happyshark.java.ee.service.repr.ProductRepr;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.event.ComponentSystemEvent;
-import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.List;
@@ -28,6 +26,8 @@ public class ProductController implements Serializable {
     private ProductRepr product;
 
     private List<ProductRepr> productList;
+
+    private Category category;
 
     private List<Category> categoryList;
 
@@ -67,7 +67,36 @@ public class ProductController implements Serializable {
         return "/product_form.xhtml?faces-redirect=true";
     }
 
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
     public List<Category> getCategories() {
         return categoryList;
+    }
+
+    public String saveCategory() {
+        categoryRepository.saveOrUpdate(category);
+        return "/category.xhtml?faces-redirect=true";
+    }
+
+    public String addCategory() {
+        this.category = new Category();
+        return "/category_form.xhtml?faces-redirect=true";
+    }
+
+    public String editCategory(Long id) {
+        this.category = categoryRepository.findById(id);
+        return "/category_form.xhtml?faces-redirect=true";
+    }
+
+    public String deleteCategory(Long id) {
+        productService.setCategoryToNullForProductsWithCategoryId(id);
+        categoryRepository.deleteById(id);
+        return "/category.xhtml?faces-redirect=true";
     }
 }

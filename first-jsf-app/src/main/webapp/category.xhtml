@@ -33,7 +33,7 @@
                 </div>
 
                 <div class="col-12">
-                    <h:dataTable value="#{productController.findAllCategories()}" var="category"
+                    <h:dataTable value="#{productController.getCategories()}" var="category"
                                  styleClass="table table-bordered my-2">
                         <h:column>
                             <f:facet name="header">Id</f:facet>
@@ -47,9 +47,9 @@
                             <f:facet name="header">Actions</f:facet>
 
                             <h:commandButton value="Edit" styleClass="btn btn-success"
-                                             action="#{productController.editCategory(category)}"/>
+                                             action="#{productController.editCategory(category.id)}"/>
                             <h:commandButton value="Delete" styleClass="btn btn-danger"
-                                             action="#{productController.deleteCategory(category)}">
+                                             action="#{productController.deleteCategory(category.id)}">
                                 <f:ajax event="click" render="categoryTableForm"/>
                             </h:commandButton>
                         </h:column>
