@@ -13,7 +13,8 @@ import java.math.BigDecimal;
         @NamedQuery(name = "findAllProduct", query = "from Product p"),
         @NamedQuery(name = "findAllWithCategoryFetch", query = "select p from Product p left join fetch p.category"),
         @NamedQuery(name = "countProducts", query = "select count(p) from Product p"),
-        @NamedQuery(name = "findAllProductsByCategoryId", query = "select p from Product p where p.category.id = :id")
+        @NamedQuery(name = "findAllProductsByCategoryId", query = "select p from Product p where p.category.id = :id"),
+        @NamedQuery(name = "findAllProductsByName", query = "select p from Product p where p.name like :name")
 })
 @Data
 @AllArgsConstructor

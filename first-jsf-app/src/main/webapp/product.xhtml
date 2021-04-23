@@ -19,6 +19,7 @@
 <h:body>
 
     <f:event listener="#{productController.preloadData}" type="preRenderView"/>
+    <f:event listener="#{categoryController.preloadData}" type="preRenderView"/>
 
     <ui:include src="WEB-INF/fragments/header.xhtml">
         <ui:param name="pageName" value="Product"/>

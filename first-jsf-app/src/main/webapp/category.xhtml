@@ -18,7 +18,7 @@
 
 <h:body>
 
-    <f:event listener="#{productController.preloadData}" type="preRenderView"/>
+    <f:event listener="#{categoryController.preloadData}" type="preRenderView"/>
 
     <ui:include src="WEB-INF/fragments/header.xhtml">
         <ui:param name="pageName" value="Category"/>
@@ -29,11 +29,11 @@
             <h:form id="categoryTableForm">
                 <div class="col-12">
                     <h:commandButton value="Add Category" styleClass="btn btn-success"
-                                     action="#{productController.addCategory()}"/>
+                                     action="#{categoryController.addCategory()}"/>
                 </div>
 
                 <div class="col-12">
-                    <h:dataTable value="#{productController.getCategories()}" var="category"
+                    <h:dataTable value="#{categoryController.getCategories()}" var="category"
                                  styleClass="table table-bordered my-2">
                         <h:column>
                             <f:facet name="header">Id</f:facet>
@@ -47,9 +47,9 @@
                             <f:facet name="header">Actions</f:facet>
 
                             <h:commandButton value="Edit" styleClass="btn btn-success"
-                                             action="#{productController.editCategory(category.id)}"/>
+                                             action="#{categoryController.editCategory(category.id)}"/>
                             <h:commandButton value="Delete" styleClass="btn btn-danger"
-                                             action="#{productController.deleteCategory(category.id)}">
+                                             action="#{categoryController.deleteCategory(category.id)}">
                                 <f:ajax event="click" render="categoryTableForm"/>
                             </h:commandButton>
                         </h:column>

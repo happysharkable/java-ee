@@ -40,17 +40,19 @@ public class ProductRepository {
                 .getResultList();
     }
 
-    public void setCategoryToNullForProductsWithCategoryId(Long categoryId) {
-        List<Product> products = em.createNamedQuery("findAllProductsByCategoryId", Product.class)
-                .setParameter("id", categoryId)
-                .getResultList();
-        for (Product p : products) {
-            p.setCategory(null);
-            save(p);
-        }
-    }
-
     public long count() {
         return em.createNamedQuery("countProducts", Long.class).getSingleResult();
+    }
+
+    public List<Product> findAllByCategoryId(long id) {
+        return em.createNamedQuery("findAllProductsByCategoryId", Product.class)
+                .setParameter("id", id)
+                .getResultList();
+    }
+
+    public List<Product> findAllByProductName(String name) {
+        return em.createNamedQuery("findAllProductsByName", Product.class)
+                .setParameter("name", name)
+                .getResultList();
     }
 }

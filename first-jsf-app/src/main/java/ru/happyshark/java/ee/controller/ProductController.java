@@ -1,8 +1,5 @@
 package ru.happyshark.java.ee.controller;
 
-import ru.happyshark.java.ee.persist.Category;
-import ru.happyshark.java.ee.persist.Product;
-import ru.happyshark.java.ee.repository.CategoryRepository;
 import ru.happyshark.java.ee.service.ProductService;
 import ru.happyshark.java.ee.service.repr.ProductRepr;
 
@@ -20,20 +17,12 @@ public class ProductController implements Serializable {
     @EJB
     private ProductService productService;
 
-    @EJB
-    private CategoryRepository categoryRepository;
-
     private ProductRepr product;
 
     private List<ProductRepr> productList;
 
-    private Category category;
-
-    private List<Category> categoryList;
-
     public void preloadData(ComponentSystemEvent componentSystemEvent) {
         this.productList = productService.findAllWithCategoryFetch();
-        this.categoryList = categoryRepository.findAll();
     }
 
     public ProductRepr getProduct() {
@@ -65,38 +54,5 @@ public class ProductController implements Serializable {
     public String addProduct() {
         this.product = new ProductRepr();
         return "/product_form.xhtml?faces-redirect=true";
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
-    public List<Category> getCategories() {
-        return categoryList;
-    }
-
-    public String saveCategory() {
-        categoryRepository.saveOrUpdate(category);
-        return "/category.xhtml?faces-redirect=true";
-    }
-
-    public String addCategory() {
-        this.category = new Category();
-        return "/category_form.xhtml?faces-redirect=true";
-    }
-
-    public String editCategory(Long id) {
-        this.category = categoryRepository.findById(id);
-        return "/category_form.xhtml?faces-redirect=true";
-    }
-
-    public String deleteCategory(Long id) {
-        productService.setCategoryToNullForProductsWithCategoryId(id);
-        categoryRepository.deleteById(id);
-        return "/category.xhtml?faces-redirect=true";
     }
 }

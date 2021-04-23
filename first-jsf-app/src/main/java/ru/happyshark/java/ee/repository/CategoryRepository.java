@@ -1,7 +1,5 @@
 package ru.happyshark.java.ee.repository;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import ru.happyshark.java.ee.persist.Category;
 
 import javax.ejb.Stateless;
@@ -12,8 +10,6 @@ import java.util.List;
 
 @Stateless
 public class CategoryRepository {
-
-    private static final Logger logger = LoggerFactory.getLogger(CategoryRepository.class);
 
     @PersistenceContext(unitName = "ds")
     private EntityManager em;
@@ -46,6 +42,9 @@ public class CategoryRepository {
 
     @TransactionAttribute
     public void deleteById(Long id) {
+        em.createQuery("UPDATE Product p SET p.category = null WHERE p.category.id = :id")
+                .setParameter("id", id)
+                .executeUpdate();
         em.createNamedQuery("deleteCategoryById")
                 .setParameter("id", id)
                 .executeUpdate();

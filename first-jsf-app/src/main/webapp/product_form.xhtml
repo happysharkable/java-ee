@@ -48,7 +48,7 @@
                         <h:outputLabel value="Category"/>
                         <h:selectOneListbox size="1" styleClass="form-control" id="productCategory"
                                             value="#{productController.product.categoryId}">
-                            <f:selectItems value="#{productController.categories}"
+                            <f:selectItems value="#{categoryController.categories}"
                                            var="cat"
                                            itemValue="#{cat.id}"
                                            itemLabel="#{cat.name}"

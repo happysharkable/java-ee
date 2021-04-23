@@ -83,11 +83,6 @@ public class ProductServiceImpl implements ProductService, ProductServiceRemote,
     }
 
     @Override
-    public void setCategoryToNullForProductsWithCategoryId(Long categoryId) {
-        productRepository.setCategoryToNullForProductsWithCategoryId(categoryId);
-    }
-
-    @Override
     public List<ProductRepr> findAllRemote() {
         return findAllWithCategoryFetch();
     }
@@ -106,5 +101,17 @@ public class ProductServiceImpl implements ProductService, ProductServiceRemote,
             throw new IllegalArgumentException("Null id in the inserted Product");
         }
         save(productRepr);
+    }
+
+    @Override
+    public List<ProductRepr> findAllByCategoryId(long id) {
+        return productRepository.findAllByCategoryId(id).stream()
+                .map(ProductServiceImpl::createProductReprWithCategory).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProductRepr> findAllByProductName(String name) {
+        return productRepository.findAllByProductName(name).stream()
+                .map(ProductServiceImpl::createProductReprWithCategory).collect(Collectors.toList());
     }
 }
