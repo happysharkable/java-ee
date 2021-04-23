@@ -3,6 +3,7 @@ package ru.happyshark.java.ee.service;
 import ru.happyshark.java.ee.persist.Product;
 import ru.happyshark.java.ee.repository.CategoryRepository;
 import ru.happyshark.java.ee.repository.ProductRepository;
+import ru.happyshark.java.ee.rest.ProductResource;
 import ru.happyshark.java.ee.service.repr.ProductRepr;
 
 import javax.ejb.EJB;
@@ -14,7 +15,7 @@ import java.util.stream.Collectors;
 
 @Stateless
 @Remote(ProductServiceRemote.class)
-public class ProductServiceImpl implements ProductService, ProductServiceRemote {
+public class ProductServiceImpl implements ProductService, ProductServiceRemote, ProductResource {
 
     @EJB
     private ProductRepository productRepository;
@@ -89,5 +90,21 @@ public class ProductServiceImpl implements ProductService, ProductServiceRemote 
     @Override
     public List<ProductRepr> findAllRemote() {
         return findAllWithCategoryFetch();
+    }
+
+    @Override
+    public void insert(ProductRepr productRepr) {
+        if (productRepr.getId() != null) {
+            throw new IllegalArgumentException("Not null id in the inserted Product");
+        }
+        save(productRepr);
+    }
+
+    @Override
+    public void update(ProductRepr productRepr) {
+        if (productRepr.getId() == null) {
+            throw new IllegalArgumentException("Null id in the inserted Product");
+        }
+        save(productRepr);
     }
 }
