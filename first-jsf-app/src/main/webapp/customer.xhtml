@@ -28,7 +28,7 @@
         <div class="row py-2">
             <h:form id="customerTableForm">
                 <div class="col-12">
-                    <h:commandButton value="Add Customer" styleClass="btn btn-success"
+                    <h:commandButton value="Add Customer" styleClass="btn btn-success" rendered="#{request.isUserInRole('ADMIN')}"
                                      action="#{customerController.addCustomer()}"/>
                 </div>
 
@@ -43,12 +43,12 @@
                             <f:facet name="header">Name</f:facet>
                             #{customer.name}
                         </h:column>
-                        <h:column>
+                        <h:column rendered="#{request.userPrincipal != null}">
                             <f:facet name="header">Actions</f:facet>
 
-                            <h:commandButton value="Edit" styleClass="btn btn-success"
+                            <h:commandButton value="Edit" styleClass="btn btn-success" rendered="#{request.isUserInRole('ADMIN') || request.isUserInRole('REDACTOR')}"
                                              action="#{customerController.editCustomer(customer)}"/>
-                            <h:commandButton value="Delete" styleClass="btn btn-danger"
+                            <h:commandButton value="Delete" styleClass="btn btn-danger" rendered="#{request.isUserInRole('ADMIN')}"
                                              action="#{customerController.deleteCustomer(customer)}">
                                 <f:ajax event="click" render="customerTableForm"/>
                             </h:commandButton>
